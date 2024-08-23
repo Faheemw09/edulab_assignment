@@ -1,9 +1,10 @@
 const express = require("express");
 const { Task } = require("../Model/TaskModel");
 const { auth } = require("../Middleware/AuthMiddleware");
+const { rbac } = require("../Middleware/RbacMiddleware");
 const taskRouter = express.Router();
 
-taskRouter.post("/create", async (req, res) => {
+taskRouter.post("/create", auth, rbac["admin"], async (req, res) => {
   const { title, description, priority, status, assignedTo, dueDate } =
     req.body;
 
@@ -17,7 +18,7 @@ taskRouter.post("/create", async (req, res) => {
       dueDate,
     });
     await tasks.save();
-    console.log(tasks);
+
     res.status(200).json({
       message: "Task created sucessfully",
       data: tasks,
@@ -29,23 +30,23 @@ taskRouter.post("/create", async (req, res) => {
   }
 });
 
-taskRouter.get("/get", auth, async (req, res) => {
+taskRouter.get("/get", auth, rbac(["admin", "user"]), async (req, res) => {
   try {
-    const isAdmin = req.userRole === "admin";
-    let tasks;
-    console.log(req.userId);
-    if (isAdmin) {
-      tasks = await Task.find({});
-    } else {
-      tasks = await Task.find({ assignedTo: req.userId });
-    }
+    const { priority, status } = req.query;
+    const query = {};
+
+    if (priority) query.priority = priority;
+    if (status) query.status = status;
+
+    const tasks = await Task.find(query);
     res.status(200).json({ tasks });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
-taskRouter.patch("/update/:id", auth, async (req, res) => {
+
+taskRouter.patch("/update/:id", auth, rbac["admin"], async (req, res) => {
   const { id } = req.params;
   const tasks = await Task.findById(id);
   try {
@@ -55,7 +56,7 @@ taskRouter.patch("/update/:id", auth, async (req, res) => {
         message: "Task Not Found",
       });
     }
-    console.log(req.userId, tasks.assignedTo);
+
     if (tasks.assignedTo.toString() !== req.userId && !isAdmin) {
       return res.status(403).json({
         message: "You are not authorized to update this task",
@@ -75,7 +76,7 @@ taskRouter.patch("/update/:id", auth, async (req, res) => {
     });
   }
 });
-taskRouter.delete("/delete/:id", auth, async (req, res) => {
+taskRouter.delete("/delete/:id", auth, rbac["admin"], async (req, res) => {
   const { id } = req.params;
   const tasks = await Task.findById(id);
 
