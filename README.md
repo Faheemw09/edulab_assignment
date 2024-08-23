@@ -36,7 +36,7 @@ This is a RESTful API designed for managing tasks with user authentication and r
  ## Usage
 ## API Endpoints
 User Routes
-1. Sign Up
+1. ## Sign Up
 Endpoint: POST /users/signup
 
 Description: Register a new user.
@@ -51,8 +51,7 @@ Request Body:
 }
 Response:
 
-json
-Copy code
+
 {
   "message": "Register user successfully",
   "data": {
@@ -62,7 +61,8 @@ Copy code
     "role": "user"
   }
 }
-2. Login
+
+2. ## Login
 Endpoint: POST /users/login
 
 Description: Authenticate a user and obtain a JWT token.
@@ -80,7 +80,9 @@ Response:
   "token": "your_jwt_token"
 }
 Task Routes
-3. Create Task
+
+3. # Create Task
+
 Endpoint: POST /tasks/create
 
 Description: Create a new task. (Requires authentication)
@@ -107,7 +109,26 @@ Response:
     "assignedTo": "user_id"
   }
 }
-4. Update Task
+
+##### 4. Get Task
+
+- Endpoint: `GET /tasks/get`
+- Description: Retrieve the details of a specific task. (Requires authentication)
+
+  Authorization: Bearer your_jwt_token
+Request Body:
+{
+  "data": {
+    "_id": "task_id",
+    "title": "Task Title",
+    "description": "Task Description",
+    "assignedTo": "user_id"
+  }
+}
+
+
+5. ## Update Task
+
 Endpoint: PATCH /tasks/update/:id
 
 Description: Update an existing task. (Requires authentication and authorization)
@@ -115,6 +136,7 @@ Description: Update an existing task. (Requires authentication and authorization
 
 Authorization: Bearer your_jwt_token
 Request Body:
+
 
 
 {
@@ -132,7 +154,8 @@ Response:
     "assignedTo": "user_id"
   }
 }
-5. Delete Task
+
+6. # Delete Task
 Endpoint: DELETE /tasks/delete/:id
 
 Description: Delete an existing task. (Requires authentication and authorization)
