@@ -112,7 +112,10 @@ Request Body:
     "assignedTo": "user_id"
   }
 }
+Query Parameters:
 
+priority (optional) - Filter tasks by priority.
+status (optional) - Filter tasks by status.
 
 5. ## Update Task
 
