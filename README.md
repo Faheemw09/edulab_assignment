@@ -10,20 +10,7 @@ This is a RESTful API designed for managing tasks with user authentication and r
 - **Error Handling:** Comprehensive error handling for all API endpoints.
 - **MongoDB Integration:** Persistent storage of users and tasks.
 
-## Table of Contents
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-  - [User Routes](#user-routes)
-    - [Sign Up](#sign-up)
-    - [Login](#login)
-  - [Task Routes](#task-routes)
-    - [Create Task](#create-task)
-    - [Update Task](#update-task)
-    - [Delete Task](#delete-task)
-- [Middleware](#middleware)
-- [Error Handling](#error-handling)
 
 
 ## Installation
